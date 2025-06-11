@@ -1,0 +1,14 @@
+# Archivos y carpetas a ignorar por Git
+
+# Base de datos
+*.sqlite3
+
+# Entorno virtual
+venv/
+__pycache__/
+*.pyc
+
+# Archivos de configuración del editor
+.vscode/
+*.log
+*.DS_Store
