@@ -9,5 +9,5 @@ Este proyecto es una web desarrollada con Django como parte de una entrega de cu
 - ✅ Formularios para ingresar datos de cada modelo
 - ✅ Navegación simple entre secciones
 
-
+Alumna: Acuña Janet Noel
 
