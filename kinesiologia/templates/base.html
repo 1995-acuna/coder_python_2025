@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultorio Kinesiológico</title>
+</head>
+<body>
+    
+        <h1>Consultorio Kinesiológico</h1>
+       <nav> 
+         <a href="{% url 'crear_profesional' %}">Profesional</a> 
+         <a href="{% url 'crear_paciente' %}"> Paciente</a>
+         <a href="{% url 'crear_consulta' %}"> Consulta</a>
+        
+       </nav>
+       <hr> 
+       {% block content %} 
+       {% endblock %}
+
+</body>
+</html>

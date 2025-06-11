@@ -1,0 +1,13 @@
+ {% extends 'base.html' %} 
+
+{% block content %}
+    <h2>Crear Profesional</h2>
+    <form method="post"> 
+        {% csrf_token %}
+        {{ form.as_p }} 
+        <button type="submit">Guardar</button>
+    </form>
+{% endblock %}
+
+#dentro del bloque content, se muestra el formulario de creación de profesional.
+#Todo lo que ponga dentro de este bloque va a reemplazar ese espacio vacío en la plantilla base html
