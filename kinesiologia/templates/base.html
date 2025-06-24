@@ -12,11 +12,19 @@
          <a href="{% url 'crear_profesional' %}">Profesional</a> 
          <a href="{% url 'crear_paciente' %}"> Paciente</a>
          <a href="{% url 'crear_consulta' %}"> Consulta</a>
-        
+         <a href="{% url 'listar_registros' %}"> Listar Registros</a>
        </nav>
        <hr> 
        {% block content %} 
        {% endblock %}
+
+       {% if messages %}
+         <ul>
+           {% for message in messages %}
+             <li>{{ message }}</li>
+           {% endfor %}
+         </ul>
+       {% endif %}
 
 </body>
 </html>
