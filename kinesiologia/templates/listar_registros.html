@@ -1,29 +1,92 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Profesionales</h2>
-<ul>
-  {% for profesional in profesionales %}
-    <li>{{ profesional.Nombre }} {{ profesional.Apellido }} - {{ profesional.Especialidad }}</li>
-  {% empty %}
-    <li>No hay profesionales registrados.</li>
-  {% endfor %}
-</ul>
-
-<h2>Pacientes</h2>
-<ul>
-  {% for paciente in pacientes %}
-    <li>{{ paciente.Nombre }} {{ paciente.Apellido }} - DNI: {{ paciente.DNI }}</li>
-  {% empty %}
-    <li>No hay pacientes registrados.</li>
-  {% endfor %}
-</ul>
-
-<h2>Consultas</h2>
-<ul>
-  {% for consulta in consultas %}
-    <li>{{ consulta.Fecha }} {{ consulta.Hora }} - {{ consulta.Profesional }} con {{ consulta.Paciente }}</li>
-  {% empty %}
-    <li>No hay consultas registradas.</li>
-  {% endfor %}
-</ul>
+<div class="row g-4">
+  <div class="col-12 col-lg-4">
+    <div class="card shadow rounded-4 h-100">
+      <div class="card-header bg-primary text-white"><i class="bi bi-person-badge"></i> Profesionales</div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-sm table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Matrícula</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for profesional in profesionales %}
+              <tr>
+                <td>{{ profesional.Nombre }}</td>
+                <td>{{ profesional.Apellido }}</td>
+                <td>{{ profesional.matricula }}</td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="3" class="text-center">Sin profesionales</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-4">
+    <div class="card shadow rounded-4 h-100">
+      <div class="card-header bg-success text-white"><i class="bi bi-people"></i> Pacientes</div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-sm table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>DNI</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for paciente in pacientes %}
+              <tr>
+                <td>{{ paciente.Nombre }}</td>
+                <td>{{ paciente.Apellido }}</td>
+                <td>{{ paciente.DNI }}</td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="3" class="text-center">Sin pacientes</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-4">
+    <div class="card shadow rounded-4 h-100">
+      <div class="card-header bg-info text-white"><i class="bi bi-calendar-check"></i> Consultas</div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-sm table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Fecha</th>
+                <th>Profesional</th>
+                <th>Paciente</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for consulta in consultas %}
+              <tr>
+                <td>{{ consulta.Fecha }}</td>
+                <td>{{ consulta.Profesional }}</td>
+                <td>{{ consulta.Paciente }}</td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="3" class="text-center">Sin consultas</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

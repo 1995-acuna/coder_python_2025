@@ -6,6 +6,7 @@ class Profesional (models.Model):
     Especialidad = models.CharField(max_length=50)
     Tel = models.CharField(max_length=50)
     Email = models.EmailField()
+    matricula = models.IntegerField(default=0)
 
     def __str__(self):
         return f"Profesional: {self.Apellido} {self.Nombre}"
@@ -33,4 +34,3 @@ class Consulta (models.Model):
 
     def __str__(self):
         return f"Consulta: {self.Profesional} {self.Paciente}"
-    

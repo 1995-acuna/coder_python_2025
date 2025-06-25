@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow rounded-4 p-4 mt-4">
+      <h2 class="mb-4 text-center text-danger">
+        <i class="bi bi-trash"></i> Eliminar Consulta
+      </h2>
+      <p class="mb-3">¿Estás seguro que deseas eliminar esta consulta?</p>
+      <ul class="list-group mb-3">
+        <li class="list-group-item"><b>Profesional:</b> {{ consulta.Profesional }}</li>
+        <li class="list-group-item"><b>Paciente:</b> {{ consulta.Paciente }}</li>
+        <li class="list-group-item"><b>Fecha:</b> {{ consulta.Fecha }}</li>
+        <li class="list-group-item"><b>Hora:</b> {{ consulta.Hora }}</li>
+      </ul>
+      <form method="post">
+        {% csrf_token %}
+        <div class="d-flex gap-3">
+          <button type="submit" class="btn btn-danger flex-fill">
+            <i class="bi bi-trash"></i> Sí, eliminar
+          </button>
+          <a href="{% url 'lista_consultas' %}" class="btn btn-secondary flex-fill">
+            <i class="bi bi-arrow-left"></i> Cancelar
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
