@@ -1,9 +1,11 @@
-from django.shortcuts import render #redirect
-# from .forms import ProfesionalForm, PacienteForm, ConsultaForm
+from django.shortcuts import render, get_object_or_404, redirect #redirect
+# from .forms import ProfesionalForm, PacienteForm, ConsultaForm,ExamenFisicoForm
 from django.contrib import messages
-from .models import Profesional, Paciente, Consulta
-from django.views.generic import ListView, DetailView, CreateView, DeleteView
+from .models import Profesional, Paciente, Consulta, ExamenFisico
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
+from .forms import ExamenFisicoForm
+
 
 
 
@@ -126,7 +128,13 @@ class ConsultaDetailView(DetailView):
     template_name = 'consulta_detail.html'
     context_object_name = 'consulta'
 
-        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            context['examen'] = self.object.examen_fisico
+        except ExamenFisico.DoesNotExist:
+            context['examen'] = None
+        return context    
 
 
 class ConsultaDeleteView(DeleteView):
@@ -146,6 +154,35 @@ def listar_registros(request):
     pacientes = Paciente.objects.all()
     consultas = Consulta.objects.all()
     return render(request, 'listar_registros.html', {'profesionales': profesionales, 'pacientes': pacientes, 'consultas': consultas})
+
+
+def crear_examen_fisico(request, consulta_id):
+    consulta = get_object_or_404(Consulta, pk=consulta_id)
+    if hasattr(consulta, 'examen_fisico'):
+        return redirect('detalle_consulta', pk=consulta_id)
+    if request.method == 'POST':
+        form = ExamenFisicoForm(request.POST)
+        if form.is_valid():
+            examen = form.save(commit=False)
+            examen.consulta = consulta
+            examen.save()
+            return redirect('detalle_consulta', pk=consulta_id)
+    else:
+        form = ExamenFisicoForm()
+    return render(request, 'examen_fisico_form.html', {'form': form, 'consulta': consulta})
+
+
+class EditarExamenFisicoView(UpdateView):
+    model = ExamenFisico
+    form_class = ExamenFisicoForm
+    template_name = 'examen_fisico_form.html'
+
+    def form_valid(self, form):
+        messages.success(self.request, "Examen físico editado exitosamente.")
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return f"/detalle_consulta/{self.object.consulta.id}/"
 
 
 

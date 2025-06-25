@@ -34,3 +34,20 @@ class Consulta (models.Model):
 
     def __str__(self):
         return f"Consulta: {self.Profesional} {self.Paciente}"
+
+class ExamenFisico(models.Model):
+    consulta = models.OneToOneField(Consulta, on_delete=models.CASCADE, related_name='examen_fisico')
+    peso = models.DecimalField(max_digits=5, decimal_places=2)
+    altura = models.DecimalField(max_digits=5, decimal_places=2)
+    presion_arterial = models.CharField(max_length=20)
+    movimientos_activos = models.TextField()
+    movimientos_pasivos = models.TextField()
+    test_neurologicos = models.TextField()
+    test_ortopedicos = models.TextField()
+    test_neurodinamicos = models.TextField()
+    palpacion = models.TextField()
+    test_adicionales = models.TextField()
+    observaciones_clinicas = models.TextField()
+
+    def __str__(self):
+        return f"Examen físico de {self.consulta.Paciente} ({self.consulta.Fecha})"

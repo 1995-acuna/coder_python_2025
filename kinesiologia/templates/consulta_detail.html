@@ -1,21 +1,49 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-6 col-lg-5">
-    <div class="card shadow rounded-4 p-4 mt-4">
-      <h2 class="mb-4 text-center">
-        <i class="bi bi-calendar-check"></i> Detalle de la Consulta
-      </h2>
-      <ul class="list-group mb-3">
-        <li class="list-group-item"><b>Profesional:</b> {{ consulta.Profesional }}</li>
-        <li class="list-group-item"><b>Paciente:</b> {{ consulta.Paciente }}</li>
-        <li class="list-group-item"><b>Fecha:</b> {{ consulta.Fecha }}</li>
-        <li class="list-group-item"><b>Hora:</b> {{ consulta.Hora }}</li>
-        <li class="list-group-item"><b>Observaciones:</b> {{ consulta.Observaciones|default:'-' }}</li>
+<div class="container">
+  <div class="card shadow mb-4">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0"><i class="bi bi-calendar-check"></i> Detalle de Consulta</h4>
+    </div>
+    <div class="card-body">
+      <!-- Datos de la consulta -->
+      <ul class="list-group mb-4">
+        <li class="list-group-item"><strong>Paciente:</strong> {{ consulta.Paciente }}</li>
+        <li class="list-group-item"><strong>Profesional:</strong> {{ consulta.Profesional }}</li>
+        <li class="list-group-item"><strong>Fecha:</strong> {{ consulta.Fecha|date:'d/m/Y' }}</li>
+        <li class="list-group-item"><strong>Hora:</strong> {{ consulta.Hora }}</li>
+        <li class="list-group-item"><strong>Observaciones:</strong> {{ consulta.Observaciones|default:'-' }}</li>
       </ul>
-      <a href="{% url 'lista_consultas' %}" class="btn btn-secondary w-100">
-        <i class="bi bi-arrow-left"></i> Volver a la lista
-      </a>
+      {% if examen %}
+      <div class="card border-success mb-3">
+        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+          <span><i class="bi bi-clipboard2-pulse"></i> Examen Físico</span>
+          <a href="{% url 'editar_examen_fisico' examen.id %}" class="btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i> Editar</a>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Peso:</strong> {{ examen.peso }} kg</li>
+            <li class="list-group-item"><strong>Altura:</strong> {{ examen.altura }} cm</li>
+            <li class="list-group-item"><strong>Presión arterial:</strong> {{ examen.presion_arterial }}</li>
+            <li class="list-group-item"><strong>Movimientos activos:</strong> {{ examen.movimientos_activos }}</li>
+            <li class="list-group-item"><strong>Movimientos pasivos:</strong> {{ examen.movimientos_pasivos }}</li>
+            <li class="list-group-item"><strong>Test neurológicos:</strong> {{ examen.test_neurologicos }}</li>
+            <li class="list-group-item"><strong>Test ortopédicos:</strong> {{ examen.test_ortopedicos }}</li>
+            <li class="list-group-item"><strong>Test neurodinámicos:</strong> {{ examen.test_neurodinamicos }}</li>
+            <li class="list-group-item"><strong>Palpación:</strong> {{ examen.palpacion }}</li>
+            <li class="list-group-item"><strong>Test adicionales:</strong> {{ examen.test_adicionales }}</li>
+            <li class="list-group-item"><strong>Observaciones clínicas:</strong> {{ examen.observaciones_clinicas }}</li>
+          </ul>
+        </div>
+      </div>
+      {% else %}
+      <div class="alert alert-warning d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-exclamation-circle"></i> No hay examen físico registrado para esta consulta.</span>
+        <a href="{% url 'crear_examen_fisico' consulta.id %}" class="btn btn-success btn-sm">
+          <i class="bi bi-plus-circle"></i> Agregar Examen Físico
+        </a>
+      </div>
+      {% endif %}
     </div>
   </div>
 </div>
