@@ -210,6 +210,28 @@ def crear_sesion(request):
         form = SesionForm()
     return render(request, 'sesion_form.html', {'form': form})
 
+@login_required
+def editar_sesion(request, pk):
+    sesion = get_object_or_404(Sesion, pk=pk)
+    if request.method == 'POST':
+        form = SesionForm(request.POST, instance=sesion)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Sesión editada exitosamente.')
+            return redirect('sesion_detail', pk=sesion.pk)
+    else:
+        form = SesionForm(instance=sesion)
+    return render(request, 'sesion_form.html', {'form': form, 'sesion': sesion})
+
+@login_required
+def eliminar_sesion(request, pk):
+    sesion = get_object_or_404(Sesion, pk=pk)
+    if request.method == 'POST':
+        sesion.delete()
+        messages.success(request, 'Sesión eliminada exitosamente.')
+        return redirect('sesion_list')
+    return render(request, 'sesion_confirm_delete.html', {'sesion': sesion})
+
 
 
 

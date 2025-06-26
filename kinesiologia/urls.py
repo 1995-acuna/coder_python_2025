@@ -26,6 +26,8 @@ urlpatterns = [
     path('sesiones/', views.sesion_list, name='sesion_list'),
     path('sesion/<int:pk>/', views.sesion_detail, name='sesion_detail'),
     path('sesion/crear/', views.crear_sesion, name='crear_sesion'),
+    path('sesion/<int:pk>/editar/', views.editar_sesion, name='editar_sesion'),
+    path('sesion/<int:pk>/eliminar/', views.eliminar_sesion, name='eliminar_sesion'),
     
 ]
 

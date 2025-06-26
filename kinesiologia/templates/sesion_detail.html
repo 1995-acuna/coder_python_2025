@@ -26,7 +26,13 @@
                 <dt class="col-sm-3">Observaciones:</dt>
                 <dd class="col-sm-9">{{ sesion.observaciones|default:'-' }}</dd>
             </dl>
-            <a href="{% url 'sesion_list' %}" class="btn btn-secondary mt-3">
+            <a href="{% url 'editar_sesion' sesion.id %}" class="btn btn-warning mt-3 me-2">
+                <i class="bi bi-pencil"></i> Editar
+            </a>
+            <a href="{% url 'eliminar_sesion' sesion.id %}" class="btn btn-danger mt-3">
+                <i class="bi bi-trash"></i> Eliminar
+            </a>
+            <a href="{% url 'sesion_list' %}" class="btn btn-secondary mt-3 ms-2">
                 <i class="bi bi-arrow-left"></i> Volver al listado
             </a>
         </div>
