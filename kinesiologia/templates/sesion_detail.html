@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Detalle de Sesión{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4>Detalle de Sesión</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Paciente:</dt>
+                <dd class="col-sm-9">{{ sesion.paciente }}</dd>
+                <dt class="col-sm-3">Profesional:</dt>
+                <dd class="col-sm-9">{{ sesion.Profesional }}</dd>
+                <dt class="col-sm-3">Fecha:</dt>
+                <dd class="col-sm-9">{{ sesion.fecha }}</dd>
+                <dt class="col-sm-3">Hora:</dt>
+                <dd class="col-sm-9">{{ sesion.hora }}</dd>
+                <dt class="col-sm-3">Estado:</dt>
+                <dd class="col-sm-9">
+                    <span class="badge bg-info">{{ sesion.estado }}</span>
+                </dd>
+                <dt class="col-sm-3">Observaciones:</dt>
+                <dd class="col-sm-9">{{ sesion.observaciones|default:'-' }}</dd>
+            </dl>
+            <a href="{% url 'sesion_list' %}" class="btn btn-secondary mt-3">
+                <i class="bi bi-arrow-left"></i> Volver al listado
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

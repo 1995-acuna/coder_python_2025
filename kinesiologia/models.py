@@ -51,3 +51,14 @@ class ExamenFisico(models.Model):
 
     def __str__(self):
         return f"Examen físico de {self.consulta.Paciente} ({self.consulta.Fecha})"
+
+class Sesion(models.Model):
+    paciente  = models.ForeignKey(Paciente, on_delete=models.CASCADE, related_name='sesiones')
+    Profesional = models.ForeignKey(Profesional, on_delete=models.SET_NULL, null=True)
+    fecha = models.DateField()
+    hora = models.TimeField()
+    estado = models.CharField(max_length=20, choices=[('Pendiente', 'Pendiente'), ('Realizada', 'Realizada'), ('Cancelada', 'Cancelada')], default='Pendiente')
+    observaciones = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"Sesión de {self.paciente} con {self.Profesional} el {self.fecha} a las {self.hora} - Estado: {self.estado}"

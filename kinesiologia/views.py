@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect #redirect
 # from .forms import ProfesionalForm, PacienteForm, ConsultaForm,ExamenFisicoForm
 from django.contrib import messages
-from .models import Profesional, Paciente, Consulta, ExamenFisico
+from .models import Profesional, Paciente, Consulta, ExamenFisico, Sesion
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from .forms import ExamenFisicoForm
+from .forms import ExamenFisicoForm, SesionForm
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -134,7 +135,10 @@ class ConsultaDetailView(DetailView):
             context['examen'] = self.object.examen_fisico
         except ExamenFisico.DoesNotExist:
             context['examen'] = None
-        return context    
+        # Agregar sesiones del paciente   
+    
+        context['sesiones_paciente'] = Sesion.objects.filter(paciente=self.object.Paciente).order_by('-fecha')
+        return context
 
 
 class ConsultaDeleteView(DeleteView):
@@ -183,6 +187,28 @@ class EditarExamenFisicoView(UpdateView):
 
     def get_success_url(self):
         return f"/detalle_consulta/{self.object.consulta.id}/"
+
+@login_required
+def sesion_list(request):
+    sesiones = Sesion.objects.select_related('paciente', 'Profesional').order_by('-fecha', '-hora')
+    return render(request, 'sesion_list.html', {'sesiones': sesiones})
+
+@login_required
+def sesion_detail(request, pk):
+    sesion = get_object_or_404(Sesion, pk=pk)
+    return render(request, 'sesion_detail.html', {'sesion': sesion})
+
+@login_required
+def crear_sesion(request):
+    if request.method == 'POST':
+        form = SesionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Sesión creada exitosamente.')
+            return redirect('sesion_list')
+    else:
+        form = SesionForm()
+    return render(request, 'sesion_form.html', {'form': form})
 
 
 

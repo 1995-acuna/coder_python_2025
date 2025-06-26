@@ -23,5 +23,9 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
     path('listar_registros/', views.listar_registros, name='listar_registros'),
     path('examen/<int:pk>/editar/', views.EditarExamenFisicoView.as_view(), name='editar_examen_fisico'),
+    path('sesiones/', views.sesion_list, name='sesion_list'),
+    path('sesion/<int:pk>/', views.sesion_detail, name='sesion_detail'),
+    path('sesion/crear/', views.crear_sesion, name='crear_sesion'),
+    
 ]
 

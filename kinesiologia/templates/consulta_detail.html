@@ -48,3 +48,39 @@
   </div>
 </div>
 {% endblock %}
+
+<hr>
+<h3>📆 Historial de Sesiones del Paciente</h3>
+
+{% if sesiones_paciente %}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Estado</th>
+        <th>Profesional</th>
+        <th>Observaciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sesion in sesiones_paciente %}
+        <tr>
+          <td>{{ sesion.fecha }}</td>
+          <td>
+            {% if sesion.estado == 'Realizada' %}
+              <span class="badge bg-success">Realizada</span>
+            {% elif sesion.estado == 'Pendiente' %}
+              <span class="badge bg-warning text-dark">Pendiente</span>
+            {% else %}
+              <span class="badge bg-danger">Cancelada</span>
+            {% endif %}
+          </td>
+          <td>{{ sesion.profesional }}</td>
+          <td>{{ sesion.observaciones }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>Este paciente no tiene sesiones registradas aún.</p>
+{% endif %}

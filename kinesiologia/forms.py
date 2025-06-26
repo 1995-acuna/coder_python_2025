@@ -1,5 +1,5 @@
 from django import forms
-from kinesiologia.models import Profesional, Paciente, Consulta, ExamenFisico
+from kinesiologia.models import Profesional, Paciente, Consulta, ExamenFisico, Sesion
 
 class ProfesionalForm(forms.ModelForm):
     class Meta:
@@ -32,4 +32,17 @@ class ExamenFisicoForm(forms.ModelForm):
             'palpacion': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
             'test_adicionales': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
             'observaciones_clinicas': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        }
+
+class SesionForm(forms.ModelForm):
+    class Meta:
+        model = Sesion
+        fields = '__all__'
+        widgets = {
+            'fecha': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'hora': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
+            'paciente': forms.Select(attrs={'class': 'form-select'}),
+            'Profesional': forms.Select(attrs={'class': 'form-select'}),
+            'estado': forms.Select(attrs={'class': 'form-select'}),
+            'observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
         }
