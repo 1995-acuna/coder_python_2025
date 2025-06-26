@@ -6,12 +6,12 @@ from django.views.generic import ListView, DetailView, CreateView, DeleteView, U
 from django.urls import reverse_lazy
 from .forms import ExamenFisicoForm, SesionForm
 from django.contrib.auth.decorators import login_required
+from .superuser_access import superuser_required, SuperuserRequiredMixin
 
 
 
 
-
-
+@superuser_required
 def home(request):
     return render(request, 'base.html')
 ###################################################################################################################
@@ -24,13 +24,13 @@ def home(request):
 #     return render(request, 'crear_profesional.html', {'form': form})
 
 
-class profesionalListView(ListView):
+class profesionalListView(SuperuserRequiredMixin, ListView):
     model = Profesional
     template_name = 'profesional_list.html'
     context_object_name = 'profesionales'
 
 
-class profesionalCreateView(CreateView):
+class profesionalCreateView(SuperuserRequiredMixin, CreateView):
     model = Profesional
     template_name = 'profesional_form.html'
     fields = '__all__'
@@ -41,13 +41,13 @@ class profesionalCreateView(CreateView):
         return super().form_valid(form)
     
 
-class profesionalDetailView(DetailView):
+class profesionalDetailView(SuperuserRequiredMixin, DetailView):
     model = Profesional
     template_name = 'profesional_detail.html'
     context_object_name = 'profesional'
 
 
-class profesionalDeleteView(DeleteView):
+class profesionalDeleteView(SuperuserRequiredMixin, DeleteView):
     model = Profesional
     template_name = 'profesional_confirm_delete.html'
     success_url = reverse_lazy("home")
@@ -65,13 +65,13 @@ class profesionalDeleteView(DeleteView):
 #     return render(request, 'crear_paciente.html', {'form': form})
 
 
-class pacienteListView(ListView):
+class pacienteListView(SuperuserRequiredMixin, ListView):
     model = Paciente
     template_name = 'paciente_list.html'
     context_object_name = 'pacientes'
 
 
-class pacienteCreateView(CreateView):
+class pacienteCreateView(SuperuserRequiredMixin, CreateView):
     model = Paciente
     template_name = 'paciente_form.html'
     fields = '__all__'
@@ -82,13 +82,13 @@ class pacienteCreateView(CreateView):
         return super().form_valid(form)
     
 
-class pacienteDetailView(DetailView):
+class pacienteDetailView(SuperuserRequiredMixin, DetailView):
     model = Paciente
     template_name = 'paciente_detail.html'
     context_object_name = 'paciente'
     
 
-class pacienteDeleteView(DeleteView):
+class pacienteDeleteView(SuperuserRequiredMixin, DeleteView):
     model = Paciente
     template_name = 'paciente_confirm_delete.html'
     success_url = reverse_lazy("lista_pacientes")
@@ -107,13 +107,13 @@ class pacienteDeleteView(DeleteView):
 
 
 
-class consultaListView(ListView):
+class consultaListView(SuperuserRequiredMixin, ListView):
     model = Consulta
     template_name = 'consulta_list.html'
     context_object_name = 'consultas'
 
 
-class ConsultaCreateView(CreateView):
+class ConsultaCreateView(SuperuserRequiredMixin, CreateView):
     model = Consulta
     template_name = 'consulta_form.html'
     fields = '__all__'
@@ -124,7 +124,7 @@ class ConsultaCreateView(CreateView):
         return super().form_valid(form)
     
 
-class ConsultaDetailView(DetailView):
+class ConsultaDetailView(SuperuserRequiredMixin, DetailView):
     model = Consulta
     template_name = 'consulta_detail.html'
     context_object_name = 'consulta'
@@ -141,7 +141,7 @@ class ConsultaDetailView(DetailView):
         return context
 
 
-class ConsultaDeleteView(DeleteView):
+class ConsultaDeleteView(SuperuserRequiredMixin, DeleteView):
     model = Consulta
     template_name = 'consulta_confirm_delete.html'
     success_url = reverse_lazy("lista_consultas")
@@ -153,6 +153,7 @@ class ConsultaDeleteView(DeleteView):
 ################################################################################################
 
 
+@superuser_required
 def listar_registros(request):
     profesionales = Profesional.objects.all()
     pacientes = Paciente.objects.all()
@@ -160,6 +161,7 @@ def listar_registros(request):
     return render(request, 'listar_registros.html', {'profesionales': profesionales, 'pacientes': pacientes, 'consultas': consultas})
 
 
+@superuser_required
 def crear_examen_fisico(request, consulta_id):
     consulta = get_object_or_404(Consulta, pk=consulta_id)
     if hasattr(consulta, 'examen_fisico'):
@@ -176,7 +178,7 @@ def crear_examen_fisico(request, consulta_id):
     return render(request, 'examen_fisico_form.html', {'form': form, 'consulta': consulta})
 
 
-class EditarExamenFisicoView(UpdateView):
+class EditarExamenFisicoView(SuperuserRequiredMixin, UpdateView):
     model = ExamenFisico
     form_class = ExamenFisicoForm
     template_name = 'examen_fisico_form.html'
@@ -188,17 +190,17 @@ class EditarExamenFisicoView(UpdateView):
     def get_success_url(self):
         return f"/detalle_consulta/{self.object.consulta.id}/"
 
-@login_required
+@superuser_required
 def sesion_list(request):
     sesiones = Sesion.objects.select_related('paciente', 'Profesional').order_by('-fecha', '-hora')
     return render(request, 'sesion_list.html', {'sesiones': sesiones})
 
-@login_required
+@superuser_required
 def sesion_detail(request, pk):
     sesion = get_object_or_404(Sesion, pk=pk)
     return render(request, 'sesion_detail.html', {'sesion': sesion})
 
-@login_required
+@superuser_required
 def crear_sesion(request):
     if request.method == 'POST':
         form = SesionForm(request.POST)
@@ -210,7 +212,7 @@ def crear_sesion(request):
         form = SesionForm()
     return render(request, 'sesion_form.html', {'form': form})
 
-@login_required
+@superuser_required
 def editar_sesion(request, pk):
     sesion = get_object_or_404(Sesion, pk=pk)
     if request.method == 'POST':
@@ -223,7 +225,7 @@ def editar_sesion(request, pk):
         form = SesionForm(instance=sesion)
     return render(request, 'sesion_form.html', {'form': form, 'sesion': sesion})
 
-@login_required
+@superuser_required
 def eliminar_sesion(request, pk):
     sesion = get_object_or_404(Sesion, pk=pk)
     if request.method == 'POST':
